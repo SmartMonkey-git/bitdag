@@ -3,7 +3,7 @@ use crate::traits::GetDAGEdges;
 use bit_matrix::BitMatrix;
 use rayon::iter::ParallelIterator;
 use rayon::prelude::IntoParallelIterator;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[cfg_attr(
     feature = "miniserde",
@@ -12,6 +12,8 @@ use std::collections::HashMap;
 #[derive(Debug, Clone)]
 pub struct BitDag {
     matrix: BitMatrix,
+    direct_children: Vec<Vec<usize>>,
+    direct_parents: Vec<Vec<usize>>,
     term_to_idx: HashMap<String, usize>,
     idx_to_term: Vec<String>,
 }
@@ -44,19 +46,151 @@ impl BitDag {
         let n = terms.len();
         let mut matrix = BitMatrix::new(n, n);
 
+        let mut direct_children = vec![Vec::new(); n];
+        let mut direct_parents = vec![Vec::new(); n]; // NEW
+
         for (parent, child) in edges {
             let i = term_to_idx[parent];
             let j = term_to_idx[child];
+
             matrix.set(i, j, true);
+
+            direct_children[i].push(j);
+            direct_parents[j].push(i); // NEW: Child points back to parent
+        }
+
+        for children in direct_children.iter_mut() {
+            children.sort_unstable();
+            children.dedup();
+        }
+
+        for parents in direct_parents.iter_mut() {
+            parents.sort_unstable();
+            parents.dedup();
         }
 
         matrix.transitive_closure();
 
         Self {
             matrix,
+            direct_children,
+            direct_parents, // NEW
             term_to_idx,
             idx_to_term: terms,
         }
+    }
+
+    pub fn get_immediate_children(&self, subject: &str) -> crate::Result<Vec<&str>> {
+        if let Some(idx) = self.term_to_idx.get(subject) {
+            let children = self.direct_children[*idx]
+                .iter()
+                .map(|&child_idx| self.idx_to_term[child_idx].as_str())
+                .collect();
+            Ok(children)
+        } else {
+            Err(BitDagError::UnknownID(subject.to_string()))
+        }
+    }
+
+    pub fn get_immediate_parents(&self, subject: &str) -> crate::Result<Vec<&str>> {
+        if let Some(idx) = self.term_to_idx.get(subject) {
+            let parents = self.direct_parents[*idx]
+                .iter()
+                .map(|&parent_idx| self.idx_to_term[parent_idx].as_str())
+                .collect();
+            Ok(parents)
+        } else {
+            Err(BitDagError::UnknownID(subject.to_string()))
+        }
+    }
+
+    pub fn get_n_deep_children<'a>(
+        &'a self,
+        subject: &'a str,
+        depth: usize,
+    ) -> crate::Result<Vec<&'a str>> {
+        let start_idx = self
+            .term_to_idx
+            .get(subject)
+            .ok_or_else(|| BitDagError::UnknownID(subject.to_string()))?;
+
+        if depth == 0 {
+            return Ok(vec![subject]);
+        }
+        if depth == 1 {
+            return self.get_immediate_children(subject);
+        }
+
+        let mut current_level = vec![*start_idx];
+        let mut next_level = Vec::new();
+
+        for _ in 0..depth {
+            next_level.clear();
+
+            for &node in &current_level {
+                next_level.extend_from_slice(&self.direct_children[node]);
+            }
+
+            next_level.sort_unstable();
+            next_level.dedup();
+
+            if next_level.is_empty() {
+                return Ok(Vec::new());
+            }
+            std::mem::swap(&mut current_level, &mut next_level);
+        }
+
+        let n_deep_children = current_level
+            .into_iter()
+            .map(|child_idx| self.idx_to_term[child_idx].as_str())
+            .collect();
+
+        Ok(n_deep_children)
+    }
+
+    pub fn get_n_deep_parents<'a>(
+        &'a self,
+        subject: &'a str,
+        depth: usize,
+    ) -> crate::Result<Vec<&'a str>> {
+        let start_idx = self
+            .term_to_idx
+            .get(subject)
+            .ok_or_else(|| BitDagError::UnknownID(subject.to_string()))?;
+
+        if depth == 0 {
+            return Ok(vec![subject]);
+        }
+        if depth == 1 {
+            return self.get_immediate_parents(subject);
+        }
+
+        let mut current_level = vec![*start_idx];
+        let mut next_level = Vec::new();
+
+        for _ in 0..depth {
+            next_level.clear();
+
+            for &node in &current_level {
+                next_level.extend_from_slice(&self.direct_parents[node]);
+            }
+
+            next_level.sort_unstable();
+            next_level.dedup();
+
+            if next_level.is_empty() {
+                return Ok(Vec::new());
+            }
+
+            std::mem::swap(&mut current_level, &mut next_level);
+        }
+
+        let n_deep_parents = current_level
+            .into_iter()
+            .map(|parent_idx| self.idx_to_term[parent_idx].as_str())
+            .collect();
+
+        Ok(n_deep_parents)
     }
 
     pub fn get_descendants(&self, subject: &str) -> crate::Result<Vec<&str>> {
