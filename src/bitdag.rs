@@ -112,7 +112,7 @@ impl BitDag {
         {
             Ok(self.matrix[(*parent_idx, *child_idx)])
         } else {
-            Err(BitDagError::UnknownID(child.to_string())) // Or parent's ID
+            Err(BitDagError::UnknownID(child.to_string()))
         }
     }
 
