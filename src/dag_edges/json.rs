@@ -65,6 +65,6 @@ mod tests {
 
         let ontolius: FullCsrOntology = loader.load_from_path(a).unwrap();
 
-        let edges = ontolius.edges("HP:0000118").unwrap();
+        let _edges = ontolius.edges("HP:0000118").unwrap();
     }
 }

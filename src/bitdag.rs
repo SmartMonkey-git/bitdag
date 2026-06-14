@@ -3,7 +3,7 @@ use crate::traits::GetDAGEdges;
 use bit_matrix::BitMatrix;
 use rayon::iter::ParallelIterator;
 use rayon::prelude::IntoParallelIterator;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 #[cfg_attr(
     feature = "miniserde",
