@@ -47,7 +47,7 @@ impl BitDag {
         let mut matrix = BitMatrix::new(n, n);
 
         let mut direct_children = vec![Vec::new(); n];
-        let mut direct_parents = vec![Vec::new(); n]; // NEW
+        let mut direct_parents = vec![Vec::new(); n];
 
         for (parent, child) in edges {
             let i = term_to_idx[parent];
@@ -56,7 +56,7 @@ impl BitDag {
             matrix.set(i, j, true);
 
             direct_children[i].push(j);
-            direct_parents[j].push(i); // NEW: Child points back to parent
+            direct_parents[j].push(i);
         }
 
         for children in direct_children.iter_mut() {
@@ -74,7 +74,7 @@ impl BitDag {
         Self {
             matrix,
             direct_children,
-            direct_parents, // NEW
+            direct_parents,
             term_to_idx,
             idx_to_term: terms,
         }
