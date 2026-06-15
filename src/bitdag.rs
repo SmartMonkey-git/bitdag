@@ -278,24 +278,24 @@ impl BitDag {
     ///
     /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_ancestors(&self, subject: &str) -> crate::Result<Vec<&str>> {
-        let Some(row_idx) = self.term_to_idx.get(subject) else {
+        let Some(&target_col_idx) = self.term_to_idx.get(subject) else {
             return Err(BitDagError::UnknownID(subject.to_string()));
         };
 
-        let n_cols = self.matrix.size().1;
-        let row = &self.matrix[*row_idx]; // &BitVecSlice — Derefs to &[Block]
         let mut ancestors = Vec::new();
+        let n_rows = self.matrix.size().0;
 
-        for (word_idx, &word) in row.iter_blocks().enumerate() {
-            let mut w = word;
-            while w != 0 {
-                let bit = w.trailing_zeros() as usize;
-                let col_idx = word_idx * BITS + bit;
-                if col_idx >= n_cols {
-                    break;
+        let word_idx = target_col_idx / BITS;
+
+        let bit_mask: u32 = 1 << (target_col_idx % BITS);
+
+        for row_idx in 0..n_rows {
+            let row = &self.matrix[row_idx];
+
+            if let Some(&word) = row.iter_blocks().nth(word_idx) {
+                if (word & bit_mask) != 0 {
+                    ancestors.push(self.idx_to_term[row_idx].as_str());
                 }
-                ancestors.push(self.idx_to_term[col_idx].as_str());
-                w &= w - 1;
             }
         }
 
