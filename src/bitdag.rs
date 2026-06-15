@@ -2,6 +2,7 @@ use crate::edge::Edge;
 use crate::error::BitDagError;
 use crate::traits::ToEdges;
 use bit_matrix::BitMatrix;
+use bit_matrix::block::BITS;
 use rayon::iter::ParallelIterator;
 use rayon::prelude::IntoParallelIterator;
 use std::collections::HashMap;
@@ -247,22 +248,28 @@ impl BitDag {
     ///
     /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_descendants(&self, subject: &str) -> crate::Result<Vec<&str>> {
-        if let Some(row_idx) = self.term_to_idx.get(subject) {
-            let n_cols = self.matrix.size().1;
-            let row = &self.matrix[*row_idx];
+        let Some(row_idx) = self.term_to_idx.get(subject) else {
+            return Err(BitDagError::UnknownID(subject.to_string()));
+        };
 
-            let descendants: Vec<&str> = (0..n_cols)
-                .into_par_iter()
-                .filter_map(|col_idx| {
-                    let is_descendant = row[col_idx];
-                    is_descendant.then(|| self.idx_to_term[col_idx].as_str())
-                })
-                .collect();
+        let n_cols = self.matrix.size().1;
+        let row = &self.matrix[*row_idx];
+        let mut descendants = Vec::new();
 
-            Ok(descendants)
-        } else {
-            Err(BitDagError::UnknownID(subject.to_string()))
+        for (word_idx, &word) in row.iter_blocks().enumerate() {
+            let mut w: u32 = word;
+            while w != 0 {
+                let bit = w.trailing_zeros() as usize;
+                let col_idx = word_idx * BITS + bit;
+                if col_idx >= n_cols {
+                    break;
+                }
+                descendants.push(self.idx_to_term[col_idx].as_str());
+                w &= w - 1;
+            }
         }
+
+        Ok(descendants)
     }
 
     /// Retrieves all ancestors (super-nodes) of a subject node across all generations.
@@ -271,22 +278,28 @@ impl BitDag {
     ///
     /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_ancestors(&self, subject: &str) -> crate::Result<Vec<&str>> {
-        if let Some(col_idx) = self.term_to_idx.get(subject) {
-            let n_rows = self.matrix.size().0;
+        let Some(row_idx) = self.term_to_idx.get(subject) else {
+            return Err(BitDagError::UnknownID(subject.to_string()));
+        };
 
-            let ancestors: Vec<&str> = (0..n_rows)
-                .into_par_iter()
-                .filter_map(|row_idx| {
-                    let is_ancestor = self.matrix[row_idx][*col_idx];
+        let n_cols = self.matrix.size().1;
+        let row = &self.matrix[*row_idx]; // &BitVecSlice — Derefs to &[Block]
+        let mut ancestors = Vec::new();
 
-                    is_ancestor.then(|| self.idx_to_term[row_idx].as_str())
-                })
-                .collect();
-
-            Ok(ancestors)
-        } else {
-            Err(BitDagError::UnknownID(subject.to_string()))
+        for (word_idx, &word) in row.iter_blocks().enumerate() {
+            let mut w = word;
+            while w != 0 {
+                let bit = w.trailing_zeros() as usize;
+                let col_idx = word_idx * BITS + bit;
+                if col_idx >= n_cols {
+                    break;
+                }
+                ancestors.push(self.idx_to_term[col_idx].as_str());
+                w &= w - 1;
+            }
         }
+
+        Ok(ancestors)
     }
 
     /// Checks if a `child` node is a descendant of an `ancestor` node.

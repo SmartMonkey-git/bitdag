@@ -21,3 +21,12 @@ miniserde = ["dep:miniserde", "bit-matrix/miniserde"]
 serde = ["dep:serde", "bit-matrix/serde"]
 obo = ["dep:fastobo"]
 json_ontology = ["dep:ontolius"]
+
+[dev-dependencies]
+criterion = "0.5"
+ontology-registry = "0.4.2"
+ontolius = "0.7.4"
+
+[[bench]]
+name = "dag_benchmark"
+harness = false
