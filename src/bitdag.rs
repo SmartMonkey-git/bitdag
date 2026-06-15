@@ -292,10 +292,10 @@ impl BitDag {
         for row_idx in 0..n_rows {
             let row = &self.matrix[row_idx];
 
-            if let Some(&word) = row.iter_blocks().nth(word_idx) {
-                if (word & bit_mask) != 0 {
-                    ancestors.push(self.idx_to_term[row_idx].as_str());
-                }
+            if let Some(&word) = row.iter_blocks().nth(word_idx)
+                && (word & bit_mask) != 0
+            {
+                ancestors.push(self.idx_to_term[row_idx].as_str());
             }
         }
 
