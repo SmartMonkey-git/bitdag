@@ -17,8 +17,8 @@
 //!
 //! * **`serde`** — Implements standard serialization and deserialization traits for core structures.
 //! * **`miniserde`** — Implements lightweight serialization traits via `miniserde` for minimal binary overhead.
-//! * **`obo`** — Enables the OBO format adapter, unlocking the `dag_edges::obo` module (requires `fastobo`).
-//! * **`json_ontology`** — Enables the JSON ontology adapter, unlocking the `dag_edges::json` module (requires `ontolius`).
+//! * **`obo`** — Enables the OBO format adapter, unlocking the `adapters::obo` module (requires `fastobo`).
+//! * **`json_ontology`** — Enables the JSON ontology adapter, unlocking the `adapters::json` module (requires `ontolius`).
 //! ## Examples
 //!
 //! ```rust
@@ -77,8 +77,8 @@ use crate::error::BitDagError;
 /// for failed graph traversals and unknown identifier lookups.
 pub type Result<T> = std::result::Result<T, BitDagError>;
 
+pub mod adapters;
 pub mod bitdag;
-pub mod dag_edges;
 pub mod edge;
 pub mod error;
 pub mod traits;
