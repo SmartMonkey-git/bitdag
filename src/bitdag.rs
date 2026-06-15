@@ -308,12 +308,14 @@ impl BitDag {
     ///
     /// Returns [`BitDagError::UnknownID`] if either provided identifier is missing from the graph.
     pub fn is_descendant_of(&self, child: &str, ancestor: &str) -> crate::Result<bool> {
-        if let Some(child_idx) = self.term_to_idx.get(child)
-            && let Some(parent_idx) = self.term_to_idx.get(ancestor)
-        {
-            Ok(self.matrix[(*parent_idx, *child_idx)])
-        } else {
-            Err(BitDagError::UnknownID(child.to_string()))
+        match (self.term_to_idx.get(child), self.term_to_idx.get(ancestor)) {
+            (Some(child_idx), Some(parent_idx)) => Ok(self.matrix[(*parent_idx, *child_idx)]),
+            (None, Some(_)) => Err(BitDagError::UnknownID(child.to_string())),
+            (Some(_), None) => Err(BitDagError::UnknownID(ancestor.to_string())),
+            (None, None) => Err(BitDagError::UnknownID(format!(
+                "both '{}' and '{}'",
+                child, ancestor
+            ))),
         }
     }
 
@@ -323,12 +325,14 @@ impl BitDag {
     ///
     /// Returns [`BitDagError::UnknownID`] if either provided identifier is missing from the graph.
     pub fn is_ancestor_of(&self, parent: &str, child: &str) -> crate::Result<bool> {
-        if let Some(child_idx) = self.term_to_idx.get(child)
-            && let Some(parent_idx) = self.term_to_idx.get(parent)
-        {
-            Ok(self.matrix[(*parent_idx, *child_idx)])
-        } else {
-            Err(BitDagError::UnknownID(child.to_string()))
+        match (self.term_to_idx.get(parent), self.term_to_idx.get(child)) {
+            (Some(parent_idx), Some(child_idx)) => Ok(self.matrix[(*parent_idx, *child_idx)]),
+            (None, Some(_)) => Err(BitDagError::UnknownID(parent.to_string())),
+            (Some(_), None) => Err(BitDagError::UnknownID(child.to_string())),
+            (None, None) => Err(BitDagError::UnknownID(format!(
+                "both '{}' and '{}'",
+                parent, child
+            ))),
         }
     }
 
