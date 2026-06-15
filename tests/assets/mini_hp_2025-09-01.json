@@ -1,0 +1,1254 @@
+{
+  "graphs": [
+    {
+      "id": "http://purl.obolibrary.org/obo/hp.obo.owl",
+      "meta": {
+        "basicPropertyValues": [
+          {
+            "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBOFormatVersion",
+            "val": "1.2"
+          }
+        ],
+        "version": "http://purl.obolibrary.org/obo/hp/releases/2025-09-01/hp.json"
+      },
+      "nodes": [
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0000001",
+          "lbl": "All",
+          "type": "CLASS",
+          "meta": {
+            "comments": [
+              "Root of all terms in the Human Phenotype Ontology."
+            ],
+            "xrefs": [
+              {
+                "val": "UMLS:C0444868"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0000118",
+          "lbl": "Phenotypic abnormality",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "A phenotypic abnormality.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "comments": [
+              "This is the root of the phenotypic abnormality subontology of the HPO."
+            ],
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Organ abnormality"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "UMLS:C4021819"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0000707",
+          "lbl": "Abnormality of the nervous system",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "An abnormality of the nervous system.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "comments": [
+              "The nervous system comprises the neuraxis (brain, spinal cord, and ventricles), the autonomic nervous system, the enteric nervous system, and the peripheral nervous system."
+            ],
+            "synonyms": [
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasBroadSynonym",
+                "val": "Brain and/or spinal cord issue"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of the nervous system"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Neurologic abnormalities"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Neurological abnormality"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:88425004"
+              },
+              {
+                "val": "UMLS:C0497552"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0001333"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0006987"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0000738",
+          "lbl": "Hallucinations",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "Perceptions in a conscious and awake state that, in the absence of external stimuli, have qualities of real perception. These perceptions are vivid, substantial, and located in external objective space."
+            },
+            "synonyms": [
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Hallucination"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Hallucinations"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Sensory hallucination",
+                "xrefs": [
+                  "https://orcid.org/0000-0001-6908-9849"
+                ]
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:7011001"
+              },
+              {
+                "val": "UMLS:C0018524"
+              },
+              {
+                "val": "UMLS:C0235153"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-7062-8192"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-7941-2961"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-9221-9226"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0002-0183-1637"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-1785-7126"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-2291-6952"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-4958-6025"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001333",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0000707"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001871",
+          "lbl": "Abnormality of blood and blood-forming tissues",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "An abnormality of the hematopoietic system.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "comments": [
+              "The hematopoietic system comprises the organs that are involved in the production of blood, primarily the bone marrow, spleen, tonsils, and lymph nodes."
+            ],
+            "synonyms": [
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of blood and blood-forming tissues"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of the haematopoietic system"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of the hematopoietic system"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Haematological abnormality"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Hematological abnormality"
+              },
+              {
+                "pred": "hasRelatedSynonym",
+                "val": "Hematologic disease"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:191124002"
+              },
+              {
+                "val": "SNOMEDCT_US:34093004"
+              },
+              {
+                "val": "UMLS:C0018939"
+              },
+              {
+                "val": "UMLS:C0850715"
+              },
+              {
+                "val": "UMLS:C4020864"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0003135"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001877",
+          "lbl": "Abnormal erythrocyte morphology",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "Any structural abnormality of erythrocytes (red-blood cells).",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of erythrocytes"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of red blood cells"
+              },
+              {
+                "pred": "hasRelatedSynonym",
+                "val": "Abnormality of erythroid lineage cell"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:12222001"
+              },
+              {
+                "val": "UMLS:C0391870"
+              },
+              {
+                "val": "UMLS:C4020862"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0010973"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001878",
+          "lbl": "Hemolytic anemia",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "A type of anemia caused by premature destruction of red blood cells (hemolysis).",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "comments": [
+              "Normally, erythrocytes survive on average about 110-120 days. With hemolysis, the erythrocyte survival is shortened, and generally increased marrow activity results in a reticulocyte count."
+            ],
+            "synonyms": [
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Haemolytic anaemia"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Haemolytic anemia"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Hemolytic anaemia"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Increased hemolysis"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:61261009"
+              },
+              {
+                "val": "UMLS:C0002878"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0001910"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0004827"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0004853"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0004868"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0005503"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001890",
+          "lbl": "Autoimmune hemolytic anemia",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "An autoimmune form of hemolytic anemia.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "synonyms": [
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Autoimmune haemolytic anaemia"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Autoimmune haemolytic anemia"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Autoimmune hemolytic anaemia"
+              },
+              {
+                "pred": "hasExactSynonym",
+                "val": "Hemolytic anemia, autoimmune"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:413603009"
+              },
+              {
+                "val": "UMLS:C0002880"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001903",
+          "lbl": "Anemia",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "A reduction in erythrocytes volume or hemoglobin concentration.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "comments": [
+              "Anemia is not a specific entity but can result from many underlying pathologic processes. The three main causes of anemia are blood loss, decreased or faulty red blood cell production, and increased destruction of red blood cells. Various classifications are in clinical use including a classification according to the mean corpuscular volume (MCV) of the erythrocytes: microcytic, macrocytic, or normocytic. Anemias can also be classified according to variations in cell size and shape, as reflected by the red-cell distribution width (RDW). Additionally, anemias can be classified into those of inadequate production and hemolytic anemias."
+            ],
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Anaemia"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasExactSynonym",
+                "val": "Low number of red blood cells or haemoglobin"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Low number of red blood cells or hemoglobin",
+                "xrefs": [
+                  "https://orcid.org/0000-0002-6548-5200"
+                ]
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#uk_spelling",
+                "pred": "hasRelatedSynonym",
+                "val": "Decreased haemoglobin"
+              },
+              {
+                "pred": "hasRelatedSynonym",
+                "val": "Decreased hemoglobin"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:165397008"
+              },
+              {
+                "val": "SNOMEDCT_US:271737000"
+              },
+              {
+                "val": "UMLS:C0002871"
+              },
+              {
+                "val": "UMLS:C0162119"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0001926"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0003136"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0005509"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001910",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001878"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0001926",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001903"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0002715",
+          "lbl": "Abnormality of the immune system",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "An abnormality of the immune system.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "comments": [
+              "The immune system is composed of organs and interdependent cell types that collectively protect the body from infections and from the growth of tumor cells. The organs of the immune system comprise the bone marrow, the spleen, the thymus,the lymph nodes, and the cell types comprise B cells, T cells, natural killer cells, granulocytes,dendritic cells, and macrophages."
+            ],
+            "synonyms": [
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of the immune system"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Immunological abnormality"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "UMLS:C4021753"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0003257"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0003346"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+                "val": "HP:0010986"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0002960",
+          "lbl": "Autoimmunity",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "The occurrence of an immune reaction against the organism's own cells or tissues.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Autoimmune condition"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Autoimmune disease"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Autoimmune disorder"
+              },
+              {
+                "synonymType": "http://purl.obolibrary.org/obo/hp.obo#layperson",
+                "pred": "hasExactSynonym",
+                "val": "Autoimmunity"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "SNOMEDCT_US:85828009"
+              },
+              {
+                "val": "UMLS:C0004364"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0003135",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001871"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0003136",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001903"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0003257",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0002715"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0003346",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0002715"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0004827",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001878"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0004853",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001878"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0004868",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001878"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0005503",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001878"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0005509",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001903"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0006987",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0000707"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0010973",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0001877"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0010978",
+          "lbl": "Abnormality of immune system physiology",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "A functional abnormality of the immune system.",
+              "xrefs": [
+                "MP:0001790",
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "xrefs": [
+              {
+                "val": "UMLS:C4023616"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.org/dc/terms/creator",
+                "val": "https://orcid.org/0000-0002-0736-9199"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#creation_date",
+                "val": "2011-02-07T04:28:55Z"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0010986",
+          "type": "CLASS",
+          "meta": {
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0000231",
+                "val": "http://purl.obolibrary.org/obo/IAO_0000227"
+              },
+              {
+                "pred": "http://purl.obolibrary.org/obo/IAO_0100001",
+                "val": "http://purl.obolibrary.org/obo/HP_0002715"
+              }
+            ],
+            "deprecated": true
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0011446",
+          "lbl": "Abnormality of mental function",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "Cognitive, psychiatric, or memory anomaly."
+            },
+            "comments": [
+              "This includes abnormalities in speech, mood, emotions, behavior, and cognition."
+            ],
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of higher mental function"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "UMLS:C4023352"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-7062-8192"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-7941-2961"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-9221-9226"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0002-0183-1637"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-1785-7126"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-2291-6952"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-4958-6025"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/creator",
+                "val": "https://orcid.org/0000-0002-0736-9199"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#creation_date",
+                "val": "2012-03-18T04:23:59Z"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0011895",
+          "lbl": "Anemia due to reduced life span of red cells",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "A type of anemia related to a reduction in the average life span of red blood cells in the peripheral circulation, which is normally around 120 days.",
+              "xrefs": [
+                "https://orcid.org/0000-0003-2945-4463"
+              ]
+            },
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Anaemia due to reduced life span of red cells"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "UMLS:C4021112"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.org/dc/terms/creator",
+                "val": "https://orcid.org/0000-0002-0736-9199"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#creation_date",
+                "val": "2012-06-03T09:26:17Z"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_0012638",
+          "lbl": "Abnormal nervous system physiology",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "A functional anomaly of the nervous system.",
+              "xrefs": [
+                "https://orcid.org/0000-0002-0736-9199"
+              ]
+            },
+            "synonyms": [
+              {
+                "pred": "hasExactSynonym",
+                "val": "Abnormality of nervous system physiology"
+              }
+            ],
+            "xrefs": [
+              {
+                "val": "UMLS:C4022811"
+              }
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.org/dc/terms/creator",
+                "val": "https://orcid.org/0000-0002-0736-9199"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#creation_date",
+                "val": "2014-01-19T08:02:46Z"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/HP_5200423",
+          "lbl": "Abnormal experience of reality",
+          "type": "CLASS",
+          "meta": {
+            "definition": {
+              "val": "Subjective phenomena or perceptions that deviate from what is considered correct or are outside the range of normal human experiences."
+            },
+            "comments": [
+              "Abnormal experiences of reality can range from rare perceptions, such as hallucinations or delusions, to more common experiences, such as subtle misinterpretations of events, like cognitive distortions."
+            ],
+            "basicPropertyValues": [
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-7062-8192"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-7941-2961"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0001-9221-9226"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0002-0183-1637"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-1785-7126"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-2291-6952"
+              },
+              {
+                "pred": "http://purl.org/dc/terms/contributor",
+                "val": "https://orcid.org/0000-0003-4958-6025"
+              },
+              {
+                "pred": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+                "val": "human_phenotype"
+              }
+            ]
+          }
+        },
+        {
+          "id": "http://purl.obolibrary.org/obo/IAO_0000115",
+          "lbl": "definition",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#creation_date",
+          "lbl": "creation date",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasAlternativeId",
+          "lbl": "has_alternative_id",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasBroadSynonym",
+          "lbl": "has_broad_synonym",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasDbXref",
+          "lbl": "database_cross_reference",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasExactSynonym",
+          "lbl": "has_exact_synonym",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasOBOFormatVersion",
+          "lbl": "has_obo_format_version",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasOBONamespace",
+          "lbl": "has_obo_namespace",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasRelatedSynonym",
+          "lbl": "has_related_synonym",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#hasSynonymType",
+          "lbl": "has_synonym_type",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.geneontology.org/formats/oboInOwl#id",
+          "lbl": "id",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.w3.org/2000/01/rdf-schema#comment",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        },
+        {
+          "id": "http://www.w3.org/2000/01/rdf-schema#label",
+          "type": "PROPERTY",
+          "propertyType": "ANNOTATION"
+        }
+      ],
+      "edges": [
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0000118",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0000001"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0000707",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0000118"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0000738",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_5200423"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0001871",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0000118"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0001877",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0001871"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0001878",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0011895"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0001890",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0001878"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0001890",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0002960"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0001903",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0001877"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0002715",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0000118"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0002960",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0010978"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0010978",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0002715"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0011446",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0012638"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0011895",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0001903"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_0012638",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0000707"
+        },
+        {
+          "sub": "http://purl.obolibrary.org/obo/HP_5200423",
+          "pred": "is_a",
+          "obj": "http://purl.obolibrary.org/obo/HP_0011446"
+        }
+      ]
+    }
+  ]
+}
