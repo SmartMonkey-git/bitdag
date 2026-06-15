@@ -9,10 +9,10 @@ version = "0.1.2"
 
 [dependencies]
 bit-matrix = { version = "0.9.0" }
-ontolius = { version = "0.7.4", optional = true }
-fastobo = { version = "0.15.5", optional = true }
 thiserror = "2.0.18"
 rayon = "1.10.0"
+ontolius = { version = "0.7.4", optional = true }
+fastobo = { version = "0.15.5", optional = true }
 miniserde = { version = "0.1.45", optional = true }
 serde = { version = "1.0.228", features = ["derive"], optional = true }
 
