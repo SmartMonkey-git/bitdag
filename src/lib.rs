@@ -19,7 +19,56 @@
 //! * **`miniserde`** — Implements lightweight serialization traits via `miniserde` for minimal binary overhead.
 //! * **`obo`** — Enables the OBO format adapter, unlocking the `dag_edges::obo` module (requires `fastobo`).
 //! * **`json_ontology`** — Enables the JSON ontology adapter, unlocking the `dag_edges::json` module (requires `ontolius`).
-
+//! ## Examples
+//!
+//! ```rust
+//! use bitdag::bitdag::BitDag;
+//! use bitdag::edge::Edge;
+//!
+//! fn main() {
+//!     // 1. Define your edges (Parent -> Child)
+//!     let edges: Vec<Edge> = vec![
+//!         ("A", "B").into(),
+//!         ("B", "C").into(),
+//!         ("C", "D").into(),
+//!         ("C", "F").into(),
+//!     ];
+//!
+//!     // 2. Build the BitDag (computes transitive closure automatically)
+//!     let dag = BitDag::from_edges(&edges);
+//!
+//!     // 3. Perform O(1) checks
+//!     assert_eq!(dag.is_ancestor_of("A", "D").unwrap(), true);
+//!     assert_eq!(dag.is_descendant_of("A", "C").unwrap(), false);
+//!
+//!     // 4. Extract generations or sub-graphs
+//!     let descendants = dag.get_descendants("A").unwrap();
+//!     println!("Descendants of A: {:?}", descendants); // ["B", "C", "D", "F"]
+//!
+//!     let leaves = dag.get_leaves();
+//!     println!("Leaves in the graph: {:?}", leaves); // ["D", "F"]
+//! }
+//! ```
+//!
+//! ```rust
+//! fn main() {
+//!     // Requires the `json_ontology` feature
+//!     use ontolius::io::OntologyLoaderBuilder;
+//!     use ontolius::ontology::csr::FullCsrOntology;
+//!     use bitdag::traits::ToEdges;
+//!     use bitdag::bitdag::BitDag;
+//!     use std::path::PathBuf;
+//!     use std::str::FromStr;
+//!
+//!     let loader = OntologyLoaderBuilder::new().obographs_parser().build();
+//!     let manifest_dir = PathBuf::from_str(env!("CARGO_MANIFEST_DIR")).unwrap();
+//!     let test_ontology = manifest_dir.join("tests/assets/mini_hp_2025-09-01.json");
+//!     let ontology: FullCsrOntology = loader.load_from_path(test_ontology).unwrap();
+//!
+//!     // Convert directly into a BitDag starting from a root node
+//!     let dag = BitDag::from_graph(&ontology, "ROOT:0000000").unwrap();
+//! }
+//! ```
 use crate::error::BitDagError;
 
 /// A specialized `Result` type for `BitDag` operations.
