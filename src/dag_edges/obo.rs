@@ -1,10 +1,11 @@
+use crate::edge::Edge;
 use crate::error::BitDagError;
-use crate::traits::GetDAGEdges;
+use crate::traits::ToEdges;
 use fastobo::ast::{EntityFrame, OboDoc, TermClause};
 use std::collections::{HashMap, HashSet, VecDeque};
 
-impl GetDAGEdges for OboDoc {
-    fn edges(&self, root_node: &str) -> Result<Vec<(String, String)>, BitDagError> {
+impl ToEdges for OboDoc {
+    fn edges(&self, root_node: &str) -> Result<Vec<Edge>, BitDagError> {
         let mut parent_to_children: HashMap<String, Vec<String>> = HashMap::new();
 
         for entity in self.entities() {
@@ -32,7 +33,7 @@ impl GetDAGEdges for OboDoc {
         while let Some(parent) = queue.pop_front() {
             if let Some(children) = parent_to_children.get(&parent) {
                 for child in children {
-                    edges.push((parent.clone(), child.clone()));
+                    edges.push((parent.clone(), child.clone()).into());
 
                     if visited.insert(child.clone()) {
                         queue.push_back(child.clone());

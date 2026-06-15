@@ -9,11 +9,12 @@ version = "0.1.0"
 
 [dependencies]
 bit-matrix = { version = "0.9.0", features = ["miniserde"] }
-miniserde = { version = "0.1.45", optional = true }
 ontolius = "0.7.4"
 fastobo = "0.15.5"
 thiserror = "2.0.18"
 rayon = "1.10.0"
-
+miniserde = { version = "0.1.45", optional = true }
+serde = { version = "1.0.228", optional = true }
 [features]
-miniserde = ["dep:miniserde"]
+miniserde = ["dep:miniserde", "bit-matrix/miniserde"]
+serde = ["dep:serde", "bit-matrix/serde"]

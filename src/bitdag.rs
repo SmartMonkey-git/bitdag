@@ -1,5 +1,6 @@
+use crate::edge::Edge;
 use crate::error::BitDagError;
-use crate::traits::GetDAGEdges;
+use crate::traits::ToEdges;
 use bit_matrix::BitMatrix;
 use rayon::iter::ParallelIterator;
 use rayon::prelude::IntoParallelIterator;
@@ -9,6 +10,7 @@ use std::collections::HashMap;
     feature = "miniserde",
     derive(miniserde::Serialize, miniserde::Deserialize)
 )]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone)]
 pub struct BitDag {
     matrix: BitMatrix,
@@ -19,19 +21,19 @@ pub struct BitDag {
 }
 
 impl BitDag {
-    pub fn new(dag: &impl GetDAGEdges, root_node: &str) -> crate::Result<Self> {
+    pub fn from_graph(dag: &impl ToEdges, root_node: &str) -> crate::Result<Self> {
         let edges = dag.edges(root_node)?;
         Ok(Self::build(edges.as_slice()))
     }
 
-    pub fn from_edges(edges: &[(String, String)]) -> BitDag {
+    pub fn from_edges(edges: &[Edge]) -> BitDag {
         Self::build(edges)
     }
 
-    fn build(edges: &[(String, String)]) -> BitDag {
+    fn build(edges: &[Edge]) -> BitDag {
         let mut terms: Vec<String> = edges
             .iter()
-            .flat_map(|(a, b)| [a.clone(), b.clone()])
+            .flat_map(|e| [e.parent().to_string(), e.child().to_string()])
             .collect::<std::collections::HashSet<_>>()
             .into_iter()
             .collect();
@@ -43,20 +45,20 @@ impl BitDag {
             .map(|(i, t)| (t.clone(), i))
             .collect();
 
-        let n = terms.len();
-        let mut matrix = BitMatrix::new(n, n);
+        let n_terms = terms.len();
+        let mut matrix = BitMatrix::new(n_terms, n_terms);
 
-        let mut direct_children = vec![Vec::new(); n];
-        let mut direct_parents = vec![Vec::new(); n];
+        let mut direct_children = vec![Vec::new(); n_terms];
+        let mut direct_parents = vec![Vec::new(); n_terms];
 
-        for (parent, child) in edges {
-            let i = term_to_idx[parent];
-            let j = term_to_idx[child];
+        for e in edges {
+            let parent_idx = term_to_idx[e.parent()];
+            let child_idx = term_to_idx[e.child()];
 
-            matrix.set(i, j, true);
+            matrix.set(parent_idx, child_idx, true);
 
-            direct_children[i].push(j);
-            direct_parents[j].push(i);
+            direct_children[parent_idx].push(child_idx);
+            direct_parents[child_idx].push(parent_idx);
         }
 
         for children in direct_children.iter_mut() {
@@ -317,36 +319,101 @@ impl BitDag {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use ontolius::io::OntologyLoaderBuilder;
-    use ontolius::ontology::csr::FullCsrOntology;
-    use std::path::PathBuf;
-    use std::str::FromStr;
+
+    fn test_edges() -> Vec<Edge> {
+        vec![
+            ("A", "B").into(),
+            ("B", "C").into(),
+            ("G", "C").into(),
+            ("C", "D").into(),
+            ("C", "F").into(),
+        ]
+    }
+
+    fn test_bitdag(edges: Vec<Edge>) -> BitDag {
+        BitDag::from_edges(edges.as_slice())
+    }
 
     #[test]
-    fn test_json() {
-        let a = PathBuf::from_str("/Users/rouvenreuter/Downloads/hp.json").unwrap();
-        let loader = OntologyLoaderBuilder::new().obographs_parser().build();
+    fn test_is_descendant_of() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.is_descendant_of("C", "A"), Ok(true));
+        assert_eq!(bitdag.is_descendant_of("A", "C"), Ok(false));
+    }
 
-        let ontolius: FullCsrOntology = loader.load_from_path(a).unwrap();
+    #[test]
+    fn test_is_ancestor_of() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.is_ancestor_of("A", "C"), Ok(true));
+        assert_eq!(bitdag.is_ancestor_of("C", "A"), Ok(false));
+    }
 
-        let edges = ontolius.edges("HP:0000118").unwrap();
-        let bit_dag = BitDag::from_edges(edges.as_slice());
+    #[test]
+    fn test_get_descendants() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.get_descendants("A"), Ok(vec!["B", "C", "D", "F"]));
+    }
 
-        println!("{:?}", bit_dag.is_descendant_of("HP:5200203", "HP:0000738"));
-        println!("{:?}", bit_dag.is_descendant_of("HP:0002367", "HP:0000738"));
+    #[test]
+    fn test_get_ancestors() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.get_ancestors("F"), Ok(vec!["A", "B", "C", "G"]));
+    }
+
+    #[test]
+    fn test_get_n_children_deep() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.get_n_deep_children("A", 1), Ok(vec!["B"]));
+    }
+
+    #[test]
+    fn test_get_n_parents_deep() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.get_n_deep_parents("D", 1), Ok(vec!["C"]));
+    }
+
+    #[test]
+    fn test_minimize_profile_several() {
+        let bitdag = test_bitdag(test_edges());
+
+        let profile = ["A", "B", "C", "D", "F"];
+
+        let most_specific_children = bitdag.minimize_profile(&profile).unwrap();
+
+        assert_eq!(most_specific_children.len(), 2);
+        assert_eq!(most_specific_children, ["D", "F"]);
+    }
+
+    #[test]
+    fn test_minimize_profile_single() {
+        let bitdag = test_bitdag(test_edges());
+
+        let profile = ["A", "B", "C", "D"];
+
+        let most_specific_children = bitdag.minimize_profile(&profile).unwrap();
+
+        let msc = most_specific_children.first().unwrap();
+
+        assert_eq!(most_specific_children.len(), 1);
+        assert_eq!(*msc, "D");
     }
     #[test]
+    fn test_get_immediate_children() {
+        let bitdag = test_bitdag(test_edges());
 
-    fn test_json_2() {
-        let a = PathBuf::from_str("/Users/rouvenreuter/Downloads/hp.json").unwrap();
-        let loader = OntologyLoaderBuilder::new().obographs_parser().build();
+        assert_eq!(bitdag.get_immediate_children("C"), Ok(vec!["D", "F"]));
+    }
 
-        let ontolius: FullCsrOntology = loader.load_from_path(a).unwrap();
+    #[test]
+    fn test_get_immediate_parents() {
+        let bitdag = test_bitdag(test_edges());
 
-        let edges = ontolius.edges("HP:0000118").unwrap();
-        let bit_dag = BitDag::from_edges(edges.as_slice());
+        assert_eq!(bitdag.get_immediate_parents("C"), Ok(vec!["B", "G"]));
+    }
 
-        println!("{:?}", bit_dag.get_descendants("HP:0000738"));
-        println!("{:?}", bit_dag.is_descendant_of("HP:0002367", "HP:0000738"));
+    #[test]
+    fn test_get_leaves() {
+        let bitdag = test_bitdag(test_edges());
+        assert_eq!(bitdag.get_leaves(), vec!["D", "F"]);
     }
 }
