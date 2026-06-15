@@ -1,3 +1,4 @@
+/// A directed edge representing a parent-child relationship in a graph.
 #[derive(Hash, Eq, Debug, Clone, PartialEq, Ord, PartialOrd)]
 pub struct Edge {
     parent: String,
@@ -12,6 +13,7 @@ impl Edge {
     pub fn parent(&self) -> &str {
         &self.parent
     }
+
     pub fn child(&self) -> &str {
         &self.child
     }

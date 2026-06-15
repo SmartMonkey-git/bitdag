@@ -6,6 +6,12 @@ use rayon::iter::ParallelIterator;
 use rayon::prelude::IntoParallelIterator;
 use std::collections::HashMap;
 
+/// A memory-efficient Directed Acyclic Graph (DAG) representation optimized for fast
+/// ancestor, descendant, and relationship queries using an underlying bit matrix.
+///
+/// `BitDag` computes the transitive closure of the graph upon construction, enabling
+/// $O(1)$ complexity for ancestry checks and highly parallelized bitwise operations
+/// for bulk relationship queries.
 #[cfg_attr(
     feature = "miniserde",
     derive(miniserde::Serialize, miniserde::Deserialize)
@@ -13,23 +19,37 @@ use std::collections::HashMap;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Debug, Clone)]
 pub struct BitDag {
+    /// Dense bit matrix representing the transitive closure of the DAG.
+    /// `matrix[(i, j)] == true` indicates that node `i` is an ancestor of node `j`.
     matrix: BitMatrix,
+    /// Adjacency list storing the immediate children indices for each node.
     direct_children: Vec<Vec<usize>>,
+    /// Adjacency list storing the immediate parent indices for each node.
     direct_parents: Vec<Vec<usize>>,
+    /// Bidirectional mapping lookup: string term identifier to its internal matrix index.
     term_to_idx: HashMap<String, usize>,
+    /// Bidirectional mapping lookup: internal matrix index to its string term identifier.
     idx_to_term: Vec<String>,
 }
 
 impl BitDag {
+    /// Constructs a `BitDag` from an object implementing `ToEdges`, beginning traversal from a root node.
+    ///
+    /// # Errors
+    ///
+    /// Returns a `crate::Result::Err` if the graph traversal or edge extraction fails.
     pub fn from_graph(dag: &impl ToEdges, root_node: &str) -> crate::Result<Self> {
         let edges = dag.edges(root_node)?;
         Ok(Self::build(edges.as_slice()))
     }
 
+    /// Constructs a `BitDag` from a flat slice of [`Edge`] relationships.
     pub fn from_edges(edges: &[Edge]) -> BitDag {
         Self::build(edges)
     }
 
+    /// Internal builder that extracts unique terms, alphabetizes them for deterministic indexing,
+    /// populates adjacency vectors, and computes the transitive closure matrix.
     fn build(edges: &[Edge]) -> BitDag {
         let mut terms: Vec<String> = edges
             .iter()
@@ -82,6 +102,11 @@ impl BitDag {
         }
     }
 
+    /// Retrieves the immediate (1-hop) children of a given subject node.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_immediate_children(&self, subject: &str) -> crate::Result<Vec<&str>> {
         if let Some(idx) = self.term_to_idx.get(subject) {
             let children = self.direct_children[*idx]
@@ -94,6 +119,11 @@ impl BitDag {
         }
     }
 
+    /// Retrieves the immediate (1-hop) parents of a given subject node.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_immediate_parents(&self, subject: &str) -> crate::Result<Vec<&str>> {
         if let Some(idx) = self.term_to_idx.get(subject) {
             let parents = self.direct_parents[*idx]
@@ -106,6 +136,14 @@ impl BitDag {
         }
     }
 
+    /// Retrieves all children located exactly `depth` steps down from the subject node.
+    ///
+    /// * A `depth` of `0` returns the subject itself.
+    /// * A `depth` of `1` is equivalent to calling [`Self::get_immediate_children`].
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_n_deep_children<'a>(
         &'a self,
         subject: &'a str,
@@ -150,6 +188,14 @@ impl BitDag {
         Ok(n_deep_children)
     }
 
+    /// Retrieves all parents located exactly `depth` steps up from the subject node.
+    ///
+    /// * A `depth` of `0` returns the subject itself.
+    /// * A `depth` of `1` is equivalent to calling [`Self::get_immediate_parents`].
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_n_deep_parents<'a>(
         &'a self,
         subject: &'a str,
@@ -195,6 +241,11 @@ impl BitDag {
         Ok(n_deep_parents)
     }
 
+    /// Retrieves all descendants (sub-nodes) of a subject node across all generations.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_descendants(&self, subject: &str) -> crate::Result<Vec<&str>> {
         if let Some(row_idx) = self.term_to_idx.get(subject) {
             let n_cols = self.matrix.size().1;
@@ -214,6 +265,11 @@ impl BitDag {
         }
     }
 
+    /// Retrieves all ancestors (super-nodes) of a subject node across all generations.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if the subject node does not exist in the DAG.
     pub fn get_ancestors(&self, subject: &str) -> crate::Result<Vec<&str>> {
         if let Some(col_idx) = self.term_to_idx.get(subject) {
             let n_rows = self.matrix.size().0;
@@ -232,6 +288,12 @@ impl BitDag {
             Err(BitDagError::UnknownID(subject.to_string()))
         }
     }
+
+    /// Checks if a `child` node is a descendant of an `ancestor` node.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if either provided identifier is missing from the graph.
     pub fn is_descendant_of(&self, child: &str, ancestor: &str) -> crate::Result<bool> {
         if let Some(child_idx) = self.term_to_idx.get(child)
             && let Some(parent_idx) = self.term_to_idx.get(ancestor)
@@ -242,6 +304,11 @@ impl BitDag {
         }
     }
 
+    /// Checks if a `parent` node is an ancestor of a `child` node.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if either provided identifier is missing from the graph.
     pub fn is_ancestor_of(&self, parent: &str, child: &str) -> crate::Result<bool> {
         if let Some(child_idx) = self.term_to_idx.get(child)
             && let Some(parent_idx) = self.term_to_idx.get(parent)
@@ -252,6 +319,13 @@ impl BitDag {
         }
     }
 
+    /// Finds all terms that are common descendants of both node `a` and node `b`.
+    ///
+    /// This evaluates a parallel bitwise `AND` across the matrix rows corresponding to both terms.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if either node `a` or `b` does not exist in the DAG.
     pub fn get_common_descendants(&self, a: &str, b: &str) -> crate::Result<Vec<&str>> {
         let a_idx = self
             .term_to_idx
@@ -276,6 +350,14 @@ impl BitDag {
         Ok(common)
     }
 
+    /// Minimizes a sub-slice profile of terms by eliminating redundant ancestors.
+    ///
+    /// If a term in the provided list is an ancestor of *any other* term in that list,
+    /// it is deemed redundant and filtered out. Only the most specific (deepest) nodes remain.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if any term in the input slice is missing from the DAG.
     pub fn minimize_profile<'a>(&self, terms: &[&'a str]) -> crate::Result<Vec<&'a str>> {
         let mut indices = Vec::with_capacity(terms.len());
         for &term in terms {
@@ -304,6 +386,10 @@ impl BitDag {
         Ok(minimized)
     }
 
+    /// Finds and returns all leaf nodes in the DAG.
+    ///
+    /// A leaf node is defined as a node that has no outgoing descendants (its corresponding row in
+    /// the bit matrix evaluates completely to `false`).
     pub fn get_leaves(&self) -> Vec<&str> {
         let (n_rows, n_cols) = self.matrix.size();
         (0..n_rows)
@@ -315,7 +401,6 @@ impl BitDag {
             .collect()
     }
 }
-
 #[cfg(test)]
 mod tests {
     use super::*;

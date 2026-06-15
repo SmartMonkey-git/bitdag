@@ -53,19 +53,3 @@ impl ToEdges for FullCsrOntology {
         Ok(edges)
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use ontolius::io::OntologyLoaderBuilder;
-    use std::path::PathBuf;
-    #[test]
-    fn test_json() {
-        let a = PathBuf::from_str("/Users/rouvenreuter/Downloads/hp.json").unwrap();
-        let loader = OntologyLoaderBuilder::new().obographs_parser().build();
-
-        let ontolius: FullCsrOntology = loader.load_from_path(a).unwrap();
-
-        let _edges = ontolius.edges("HP:0000118").unwrap();
-    }
-}
