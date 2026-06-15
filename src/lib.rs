@@ -51,7 +51,6 @@
 //! ```
 //!
 //! ```rust
-//! fn main() {
 //!     // Requires the `json_ontology` feature
 //!     use ontolius::io::OntologyLoaderBuilder;
 //!     use ontolius::ontology::csr::FullCsrOntology;
@@ -67,7 +66,6 @@
 //!
 //!     // Convert directly into a BitDag starting from a root node
 //!     let dag = BitDag::from_graph(&ontology, "ROOT:0000000").unwrap();
-//! }
 //! ```
 use crate::error::BitDagError;
 

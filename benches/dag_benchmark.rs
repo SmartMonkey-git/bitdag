@@ -12,8 +12,8 @@ use ontology_registry::{
 use std::path::PathBuf;
 use std::str::FromStr;
 
-static ROOT_NODE: &'static str = "HP:0000118";
-static TARGET_NODE: &'static str = "HP:0032708";
+static ROOT_NODE: &str = "HP:0000118";
+static TARGET_NODE: &str = "HP:0032708";
 fn load_test_data() -> FullCsrOntology {
     let manifest_dir = PathBuf::from_str(env!("CARGO_MANIFEST_DIR")).unwrap();
     let registry_dir = manifest_dir.join("tests/assets/");
