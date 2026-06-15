@@ -8,7 +8,7 @@ name = "bitdag"
 version = "0.1.2"
 
 [dependencies]
-bit-matrix = { version = "0.9.0", features = ["miniserde", "serde"] }
+bit-matrix = { version = "0.9.0" }
 ontolius = { version = "0.7.4", optional = true }
 fastobo = { version = "0.15.5", optional = true }
 thiserror = "2.0.18"
@@ -18,9 +18,9 @@ serde = { version = "1.0.228", features = ["derive"], optional = true }
 
 [features]
 miniserde = ["dep:miniserde", "bit-matrix/miniserde"]
-serde = ["dep:serde", "bit-matrix/serde"]
-obo = ["dep:fastobo"]
-json_ontology = ["dep:ontolius"]
+serde = ["bit-matrix/serde", "dep:serde"]
+obo = ["fastobo"]
+json_ontology = ["ontolius"]
 
 [dev-dependencies]
 criterion = "0.5"
