@@ -1,5 +1,5 @@
 [![Crates.io](https://img.shields.io/crates/v/ontology-registry.svg)](https://crates.io/crates/bitdag)
-[![Docs.rs](https://docs.rs/ontology-registry/badge.svg)](https://docs.rs/ontology-registry)
+[![Docs.rs](https://docs.rs/ontology-registry/badge.svg)](https://docs.rs/bitdag)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE)
 [![RobisonGroup](https://img.shields.io/badge/Robinson%20Group-blue)](https://robinsongroup.github.io/)
 
