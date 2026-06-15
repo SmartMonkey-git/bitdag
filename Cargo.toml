@@ -8,7 +8,7 @@ name = "bitdag"
 version = "0.1.2"
 
 [dependencies]
-bit-matrix = { version = "0.9.0", features = ["miniserde"] }
+bit-matrix = { version = "0.9.0", features = ["miniserde", "serde"] }
 ontolius = { version = "0.7.4", optional = true }
 fastobo = { version = "0.15.5", optional = true }
 thiserror = "2.0.18"
