@@ -14,7 +14,7 @@ fastobo = { version = "0.15.5", optional = true }
 thiserror = "2.0.18"
 rayon = "1.10.0"
 miniserde = { version = "0.1.45", optional = true }
-serde = { version = "1.0.228", optional = true }
+serde = { version = "1.0.228", features = ["derive"], optional = true }
 
 [features]
 miniserde = ["dep:miniserde", "bit-matrix/miniserde"]
