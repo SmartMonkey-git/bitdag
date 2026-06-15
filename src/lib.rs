@@ -69,7 +69,6 @@
 //!     // Convert directly into a BitDag starting from a root node
 //!     let dag = BitDag::from_graph(&ontology, "ROOT:0000000").unwrap();
 //! ```
-use crate::error::BitDagError;
 
 /// A specialized `Result` type for `BitDag` operations.
 ///
@@ -79,6 +78,10 @@ pub type Result<T> = std::result::Result<T, BitDagError>;
 
 pub mod adapters;
 pub mod bitdag;
+pub use bitdag::BitDag;
 pub mod edge;
+pub use edge::Edge;
 pub mod error;
+pub use error::BitDagError;
 pub mod traits;
+pub use traits::*;
