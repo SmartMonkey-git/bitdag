@@ -49,6 +49,8 @@
 //!     println!("Leaves in the graph: {:?}", leaves); // ["D", "F"]
 //! }
 //! ```
+//! If you are working with external ontologies, you can use the built-in adapters (ensure you have the correct feature
+//! flags enabled).
 //!
 //! ```rust
 //!     // Requires the `json_ontology` feature
