@@ -403,6 +403,169 @@ impl BitDag {
         Ok(minimized)
     }
 
+    /// Computes the structural (topology-based) Information Content for every term in the DAG.
+    ///
+    /// Uses the Sánchez et al. (2011) formulation, derived purely from graph topology
+    /// without any annotation data:
+    ///
+    /// ```text
+    /// IC(t) = −ln( |leaves(t)| / ( |anc(t)| × |leaves_total| ) )
+    /// ```
+    ///
+    /// * `|leaves(t)|`    — leaf nodes reachable from `t` (including `t` itself if it is a leaf)
+    /// * `|anc(t)|`       — ancestors of `t`, including `t` itself
+    /// * `|leaves_total|` — total leaf count in the DAG
+    ///
+    /// Complexity: O(n² / BITS) for the ancestor pass; O(n / BITS) per term for leaf descendants.
+    ///
+    /// | Term            | IC        |
+    /// |-----------------|-----------|
+    /// | Root            | 0.0       |
+    /// | Shallow, broad  | low       |
+    /// | Deep, narrow    | high      |
+    /// | Leaf at depth d | ln(d × L) |
+    pub fn structural_ic(&self) -> HashMap<String, f64> {
+        let (n_rows, n_cols) = self.matrix.size();
+        let n_terms = self.idx_to_term.len();
+
+        let is_leaf: Vec<bool> = (0..n_rows)
+            .map(|r| self.matrix[r].iter_blocks().all(|&w| w == 0))
+            .collect();
+
+        let total_leaves = is_leaf.iter().filter(|&&l| l).count() as f64;
+
+        let n_blocks = (n_terms + BITS - 1) / BITS;
+        let mut leaf_blocks = vec![0u32; n_blocks];
+        for (idx, &leaf) in is_leaf.iter().enumerate() {
+            if leaf {
+                leaf_blocks[idx / BITS] |= 1u32 << (idx % BITS);
+            }
+        }
+
+        let mut ancestor_counts = vec![1usize; n_terms];
+        for row_idx in 0..n_rows {
+            let mut block_pos = 0usize;
+            for &word in self.matrix[row_idx].iter_blocks() {
+                let mut w = word;
+                while w != 0 {
+                    let bit = w.trailing_zeros() as usize;
+                    let col_idx = block_pos * BITS + bit;
+                    if col_idx < n_cols {
+                        ancestor_counts[col_idx] += 1;
+                    }
+                    w &= w - 1; // clear lowest set bit
+                }
+                block_pos += 1;
+            }
+        }
+
+        (0..n_terms)
+            .into_par_iter()
+            .map(|term_idx| {
+                let n_leaf_desc = self.matrix[term_idx]
+                    .iter_blocks()
+                    .zip(leaf_blocks.iter())
+                    .map(|(&row_word, &leaf_word)| (row_word & leaf_word).count_ones() as usize)
+                    .sum::<usize>()
+                    + if is_leaf[term_idx] { 1 } else { 0 };
+
+                let freq = n_leaf_desc as f64 / (ancestor_counts[term_idx] as f64 * total_leaves);
+
+                (self.idx_to_term[term_idx].clone(), -freq.ln())
+            })
+            .collect()
+    }
+
+    /// Computes Information Content (IC) for every term in the DAG relative to an annotated cohort.
+    ///
+    /// IC is defined by Resnik's corpus-based formulation:
+    ///
+    /// ```text
+    /// IC(t) = −ln( count(t) / N )
+    /// ```
+    ///
+    /// where `N` is the total number of cohort members and `count(t)` is the number of members
+    /// annotated with `t` — either **directly** or because one of their direct terms is a
+    /// **descendant** of `t` (i.e., ancestor propagation is applied automatically).
+    ///
+    /// A per-member boolean mask is used during propagation so that ancestors shared by
+    /// multiple direct terms are counted **at most once** per member.
+    ///
+    /// Terms absent (directly or by ancestry) from every cohort member are omitted from the
+    /// result. Terms present in all members receive `IC = 0.0`.
+    ///
+    /// # Arguments
+    ///
+    /// * `cohort` — One `Vec<&str>` per member, each listing that member's direct term IDs.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BitDagError::UnknownID`] if any term identifier in `cohort` is absent from the DAG.
+    pub fn cohort_ic(&self, cohort: Vec<Vec<&str>>) -> crate::Result<HashMap<String, f64>> {
+        let n_members = cohort.len();
+        if n_members == 0 {
+            return Ok(HashMap::new());
+        }
+
+        let n_terms = self.idx_to_term.len();
+
+        let member_indices: crate::Result<Vec<Vec<usize>>> = cohort
+            .iter()
+            .map(|member_terms| {
+                member_terms
+                    .iter()
+                    .map(|&term| {
+                        self.term_to_idx
+                            .get(term)
+                            .copied()
+                            .ok_or_else(|| BitDagError::UnknownID(term.to_string()))
+                    })
+                    .collect()
+            })
+            .collect();
+
+        let member_indices = member_indices?;
+
+        let mut counts = vec![0usize; n_terms];
+
+        for term_indices in &member_indices {
+            let mut member_mask = vec![false; n_terms];
+
+            for &term_idx in term_indices {
+                member_mask[term_idx] = true;
+
+                let word_idx = term_idx / BITS;
+                let bit_mask: u32 = 1 << (term_idx % BITS);
+
+                for row_idx in 0..n_terms {
+                    if let Some(&word) = self.matrix[row_idx].iter_blocks().nth(word_idx)
+                        && (word & bit_mask) != 0
+                    {
+                        member_mask[row_idx] = true;
+                    }
+                }
+            }
+
+            for (idx, present) in member_mask.into_iter().enumerate() {
+                if present {
+                    counts[idx] += 1;
+                }
+            }
+        }
+
+        let ic_map = counts
+            .into_iter()
+            .enumerate()
+            .filter(|&(_, count)| count > 0)
+            .map(|(idx, count)| {
+                let freq = count as f64 / n_members as f64;
+                (self.idx_to_term[idx].clone(), -freq.ln())
+            })
+            .collect();
+
+        Ok(ic_map)
+    }
+
     /// Finds and returns all leaf nodes in the DAG.
     ///
     /// A leaf node is defined as a node that has no outgoing descendants (its corresponding row in
