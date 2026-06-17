@@ -434,7 +434,7 @@ impl BitDag {
 
         let total_leaves = is_leaf.iter().filter(|&&l| l).count() as f64;
 
-        let n_blocks = (n_terms + BITS - 1) / BITS;
+        let n_blocks = n_terms.div_ceil(BITS);
         let mut leaf_blocks = vec![0u32; n_blocks];
         for (idx, &leaf) in is_leaf.iter().enumerate() {
             if leaf {
@@ -444,8 +444,7 @@ impl BitDag {
 
         let mut ancestor_counts = vec![1usize; n_terms];
         for row_idx in 0..n_rows {
-            let mut block_pos = 0usize;
-            for &word in self.matrix[row_idx].iter_blocks() {
+            for (block_pos, &word) in self.matrix[row_idx].iter_blocks().enumerate() {
                 let mut w = word;
                 while w != 0 {
                     let bit = w.trailing_zeros() as usize;
@@ -455,7 +454,6 @@ impl BitDag {
                     }
                     w &= w - 1; // clear lowest set bit
                 }
-                block_pos += 1;
             }
         }
 
@@ -537,6 +535,7 @@ impl BitDag {
                 let word_idx = term_idx / BITS;
                 let bit_mask: u32 = 1 << (term_idx % BITS);
 
+                #[allow(clippy::needless_range_loop)]
                 for row_idx in 0..n_terms {
                     if let Some(&word) = self.matrix[row_idx].iter_blocks().nth(word_idx)
                         && (word & bit_mask) != 0
